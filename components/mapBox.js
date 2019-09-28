@@ -12,7 +12,15 @@ class MapBox extends Component {
   render() {
     const { type, player } = this.state;
     return (
-      <div className={type || player}></div>
+      <div className="box">
+        <style jsx>{`
+          .box {
+            border: solid black 2px;
+            height: 50px;
+            width: 50px;
+          }
+        `}</style>
+      </div>
     )
   }
 }

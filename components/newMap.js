@@ -5,36 +5,39 @@ class NewMap extends Component {
     super(props)
     this.state = {
       name: '',
-      size: [0, 0],
+      width: 0,
+      height: 0
     }
   }
 
   handleWidthOnChange = (e) => {
-
+    this.setState({width: e.target.value})
   }
 
   handleHeightOnChange = (e) => {
-
+    this.setState({height: e.target.value})
   }
 
-  handleCreateOnClick = (e) => {
-    e.preventDefault();
+  handleNameOnChange = (e) => {
+    this.setState({name: e.target.value})
   }
 
   render() {
+    const { createNewMap } = this.props;
+    const { width, height, name } = this.state;
     return (
       <div className="new-map-form-container">
         <form className="new-map-form">
           <label>Map Name:
-            <input type="text" name="name"/>
+            <input type="text" name="name" onChange={(e) => this.handleNameOnChange(e)}/>
           </label>
           <label>Width:
-            <input type="number" name="width"/>
+            <input type="number" name="width" onChange={(e) => this.handleWidthOnChange(e)}/>
           </label>
           <label>Height:
-            <input type="number" name="height"/>
+            <input type="number" name="height" onChange={(e) => this.handleHeightOnChange(e)}/>
           </label>
-          <button className="create-map-button" onClick={(e) => this.handleCreateOnClick(e)}>Create</button>
+          <button className="create-map-button" onClick={(e) => createNewMap(e, [width, height], name)}>Create</button>
         </form>
         <style jsx>{`
           .create-map-button {
