@@ -6,7 +6,14 @@ class MapBox extends Component {
     this.state = {
       type: null,
       player: null,
+      selected: false,
+      location: null,
     }
+  }
+
+  componentDidMount() {
+    const { type, player, location } = this.props;
+    this.setState({ type, player, location })
   }
 
   render() {
@@ -18,6 +25,7 @@ class MapBox extends Component {
             border: solid black 2px;
             height: 50px;
             width: 50px;
+            background-color: ${type};
           }
         `}</style>
       </div>

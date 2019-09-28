@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Map from './map';
 import NewMap from './newMap';
 import MapMenu from './mapInfo';
+import MapEditor from './mapEditor';
 
 class MapCreator extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class MapCreator extends Component {
       map: [],
       mapName: '',
       newMap: false,
-      showMap: true,
+      showMap: false,
       allMaps: [],
     }
   }
@@ -28,7 +29,7 @@ class MapCreator extends Component {
 
   handleMapSelect = (e, map, name) => {
     e.preventDefault();
-    this.setState({map, mapName: name})
+    this.setState({map, mapName: name, showMap: true, newMap:false})
   }
 
   createNewMap = (e, size, name) => {
@@ -51,6 +52,8 @@ class MapCreator extends Component {
     const { map, newMap, showMap, mapName, allMaps } = this.state;
     const showNewMap = newMap ? <NewMap createNewMap={this.createNewMap}/> : null;
     const mapDisplay = showMap ? <Map mapArr={map} name={mapName}/> : null;
+    const showEdit = showMap ? <MapEditor /> : null;
+    console.log(showEdit, mapDisplay)
     return (
       <div className="map-creator">
         <div className="button-container">
@@ -68,7 +71,7 @@ class MapCreator extends Component {
             {showNewMap}
           </div>
           <div className="map-edit-container">
-            <div>edit map here</div>
+            {showEdit}
           </div>
         </div>
         <style jsx>{`
@@ -83,27 +86,22 @@ class MapCreator extends Component {
           display: flex;
           justify-content: center;
         }
-
         .main-container {
           display: flex;
           width: 100%;
         }
-
         .map-edit-container {
           width: 20%;
+          display: flex;
         }
-
         .map-menu-container {
           width: 20%;
         }
-
         .map-container {
           display: flex;
           justify-content: center;
           width: 80%
         }
-
-
         .map-creator {
           display: flex;
           justify-content: center;
