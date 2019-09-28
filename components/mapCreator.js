@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Map from './map';
 import NewMap from './newMap';
+import MapMenu from './mapInfo';
 
 class MapCreator extends Component {
   constructor(props) {
@@ -10,18 +11,24 @@ class MapCreator extends Component {
       mapName: '',
       newMap: false,
       showMap: true,
+      allMaps: [],
     }
   }
 
   componentDidMount() {
-    const map = JSON.parse(window.localStorage.getItem('Map1'));
-    if (map) {
-      this.setState({map: map.mapGrid, mapName: map.name})
+    const allMaps = JSON.parse(window.localStorage.getItem('maps'))
+    if (allMaps) {
+      this.setState({allMaps})
     }
   }
 
   handleNewMapClick = () => {
     this.setState({newMap: true, showMap: false})
+  }
+
+  handleMapSelect = (e, map, name) => {
+    e.preventDefault();
+    this.setState({map, mapName: name})
   }
 
   createNewMap = (e, size, name) => {
@@ -34,13 +41,14 @@ class MapCreator extends Component {
       }
       mapGrid.push(row);
     }
-    const mapNumber = window.localStorage.length
-    window.localStorage.setItem(`Map${mapNumber + 1}`, JSON.stringify({name: name, mapGrid}))
-    this.setState({map: mapGrid, newMap: false, showMap: true})
+    const maps = JSON.parse(window.localStorage.getItem('maps')) || {};
+    maps[name] = {name, mapGrid};
+    window.localStorage.setItem('maps', JSON.stringify(maps))
+    this.setState({map: mapGrid, newMap: false, showMap: true, allMaps: maps, mapName: name})
   }
 
   render() {
-    const { map, newMap, showMap, mapName } = this.state;
+    const { map, newMap, showMap, mapName, allMaps } = this.state;
     const showNewMap = newMap ? <NewMap createNewMap={this.createNewMap}/> : null;
     const mapDisplay = showMap ? <Map mapArr={map} name={mapName}/> : null;
     return (
@@ -51,8 +59,18 @@ class MapCreator extends Component {
           <button>Clear Map</button>
           <button>Save Map</button>
         </div>
-        {mapDisplay}
-        {showNewMap}
+        <div className="main-container">
+          <div className="map-menu-container">
+            <MapMenu handleMapSelect={this.handleMapSelect} mapList={Object.values(allMaps)}/>
+          </div>
+          <div className="map-container">
+            {mapDisplay}
+            {showNewMap}
+          </div>
+          <div className="map-edit-container">
+            <div>edit map here</div>
+          </div>
+        </div>
         <style jsx>{`
         button {
           font-size: 16px;
@@ -65,6 +83,26 @@ class MapCreator extends Component {
           display: flex;
           justify-content: center;
         }
+
+        .main-container {
+          display: flex;
+          width: 100%;
+        }
+
+        .map-edit-container {
+          width: 20%;
+        }
+
+        .map-menu-container {
+          width: 20%;
+        }
+
+        .map-container {
+          display: flex;
+          justify-content: center;
+          width: 80%
+        }
+
 
         .map-creator {
           display: flex;
