@@ -1,10 +1,10 @@
 import MapBox from './mapBox';
 
-const Map = ({ mapArr, name }) => (
+const Map = ({ mapArr, name, handleAddTile }) => (
   <div className="map">
     <span className="map-name">{name}</span>
     {mapArr.map((row, index) => <div className="mapRow" key={"row" + index}>{row.map((box, index) => {
-      return <MapBox key={'column' + index} type={box.color} player={box.player} location={box.location}/>
+      return <MapBox handleAddTile={handleAddTile} key={'column' + index} type={box.color} player={box.player} location={box.location}/>
     })}</div>)}
     <style jsx>{`
       .map {

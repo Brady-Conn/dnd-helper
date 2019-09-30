@@ -20,7 +20,8 @@ class MapCreator extends Component {
         path: false,
         grass: false,
         rock: false,
-      }
+      }, 
+      activeTile: null,
     }
   }
 
@@ -41,8 +42,14 @@ class MapCreator extends Component {
       rock: false,
     };
     addTile[e.target.getAttribute('name')] = true;
-    console.log(addTile, e.target.getAttribute('name'))
-    this.setState({addTile})
+    this.setState({addTile, activeTile: e.target.getAttribute('name')})
+  }
+
+  handleAddTile = (e, location) => {
+    console.log('here', location)
+    const { map, activeTile } = this.state;
+    map[location[0]][location[1]].color = activeTile
+    this.setState({ map })
   }
 
   handleNewMapClick = () => {
@@ -73,7 +80,7 @@ class MapCreator extends Component {
   render() {
     const { map, newMap, showMap, mapName, allMaps, addTile } = this.state;
     const showNewMap = newMap ? <NewMap createNewMap={this.createNewMap}/> : null;
-    const mapDisplay = showMap ? <Map mapArr={map} name={mapName} /> : null;
+    const mapDisplay = showMap ? <Map mapArr={map} name={mapName} handleAddTile={this.handleAddTile}/> : null;
     const showEdit = showMap ? <MapEditor handleTileSelect={this.handleTileSelect} addTile={addTile}/> : null;
     return (
       <div className="map-creator">
