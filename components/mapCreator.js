@@ -13,6 +13,14 @@ class MapCreator extends Component {
       newMap: false,
       showMap: false,
       allMaps: [],
+      addTile: {
+        tree: false,
+        bush: false,
+        mountain: false,
+        path: false,
+        grass: false,
+        rock: false,
+      }
     }
   }
 
@@ -21,6 +29,20 @@ class MapCreator extends Component {
     if (allMaps) {
       this.setState({allMaps})
     }
+  }
+
+  handleTileSelect = (e) => {
+    const addTile = {
+      tree: false,
+      bush: false,
+      mountain: false,
+      path: false,
+      grass: false,
+      rock: false,
+    };
+    addTile[e.target.getAttribute('name')] = true;
+    console.log(addTile, e.target.getAttribute('name'))
+    this.setState({addTile})
   }
 
   handleNewMapClick = () => {
@@ -49,11 +71,10 @@ class MapCreator extends Component {
   }
 
   render() {
-    const { map, newMap, showMap, mapName, allMaps } = this.state;
+    const { map, newMap, showMap, mapName, allMaps, addTile } = this.state;
     const showNewMap = newMap ? <NewMap createNewMap={this.createNewMap}/> : null;
-    const mapDisplay = showMap ? <Map mapArr={map} name={mapName}/> : null;
-    const showEdit = showMap ? <MapEditor /> : null;
-    console.log(showEdit, mapDisplay)
+    const mapDisplay = showMap ? <Map mapArr={map} name={mapName} /> : null;
+    const showEdit = showMap ? <MapEditor handleTileSelect={this.handleTileSelect} addTile={addTile}/> : null;
     return (
       <div className="map-creator">
         <div className="button-container">
