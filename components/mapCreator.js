@@ -62,6 +62,16 @@ class MapCreator extends Component {
     this.setState({map, mapName: name, showMap: true, newMap:false})
   }
 
+  handleDelete = () => {
+    const { allMaps, mapName } = this.state;
+    const check = confirm(`Are you sure you want to delete ${mapName}`)
+    if (check) {
+      delete allMaps[mapName]
+      this.setState({allMaps, map: [], mapName: ''})
+      window.localStorage.setItem('maps', JSON.stringify(allMaps))
+    }
+  }
+
   createNewMap = (e, size, name) => {
     e.preventDefault()
     const mapGrid = []
@@ -87,9 +97,8 @@ class MapCreator extends Component {
       <div className="map-creator">
         <div className="button-container">
           <button onClick={() => this.handleNewMapClick()}>New Map</button>
-          <button>Delete Map</button>
+          <button onClick={() => this.handleDelete()}>Delete Map</button>
           <button>Clear Map</button>
-          <button>Save Map</button>
         </div>
         <div className="main-container">
           <div className="map-menu-container">
