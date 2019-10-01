@@ -46,10 +46,11 @@ class MapCreator extends Component {
   }
 
   handleAddTile = (e, location) => {
-    console.log('here', location)
-    const { map, activeTile } = this.state;
+    const { map, activeTile, allMaps, mapName } = this.state;
     map[location[0]][location[1]].color = activeTile
     this.setState({ map })
+    allMaps[mapName] = {name: mapName, mapGrid: map};
+    window.localStorage.setItem('maps', JSON.stringify(allMaps))
   }
 
   handleNewMapClick = () => {
@@ -132,9 +133,13 @@ class MapCreator extends Component {
         }
         .map-creator {
           display: flex;
-          justify-content: center;
+          justify-content: space-around;
           align-items: center;
           flex-direction: column;
+        }
+        .main-container {
+          display: flex;
+          justify-content: space-between;
         }
         `}</style>
       </div>

@@ -8,7 +8,7 @@ const Map = ({ mapArr, name, handleAddTile }) => (
     })}</div>)}
     <style jsx>{`
       .map {
-        width: 60%;
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
